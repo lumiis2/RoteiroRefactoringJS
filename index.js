@@ -8,6 +8,6 @@ var { gerarFaturaStr, gerarFaturaHTML } = require("./apresentacao.js");
 const faturas = JSON.parse(readFileSync('./faturas.json'));
 const calc = new ServicoCalculoFatura(new Repositorio());
 const faturaStr = gerarFaturaStr(faturas, calc);
-const faturaHTML = gerarFaturaHTML(faturas, calc);
+const faturaHTML = gerarFaturaHTML(faturas, calc); // quis manter ambas
 console.log(faturaStr);
 console.log(faturaHTML);
