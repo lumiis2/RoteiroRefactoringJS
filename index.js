@@ -34,17 +34,28 @@ function gerarFaturaStr (fatura, pecas) {
       }
       return total;
     }
+
+    function calcularCredito(apre) {
+      let creditos = 0;
+      creditos += Math.max(apre.audiencia - 30, 0);
+      if (getPeca(apre).tipo === "comedia") 
+         creditos += Math.floor(apre.audiencia / 5);
+      return creditos;   
+    }
+
+    function formatarMoeda(valor) {
+      return new Intl.NumberFormat("pt-BR",
+        { style: "currency", currency: "BRL",
+          minimumFractionDigits: 2 }).format(valor/100);
+    }
   
     for (let apre of fatura.apresentacoes) {
       let total = calcularTotalApresentacao(apre);
   
-      // créditos para próximas contratações
-      creditos += Math.max(apre.audiencia - 30, 0);
-      if (getPeca(apre).tipo === "comedia") 
-         creditos += Math.floor(apre.audiencia / 5);
-  
+      creditos += calcularCredito(apre);
+
       // mais uma linha da fatura
-      faturaStr += `  ${getPeca(apre).nome}: ${formato(total/100)} (${apre.audiencia} assentos)\n`;
+      faturaStr += `  ${getPeca(apre).nome}: ${formatarMoeda(total)} (${apre.audiencia} assentos)\n`;
       totalFatura += total;
     }
     faturaStr += `Valor total: ${formato(totalFatura/100)}\n`;
